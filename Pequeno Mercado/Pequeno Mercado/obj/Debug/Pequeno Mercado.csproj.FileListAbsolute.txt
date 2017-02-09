@@ -8,3 +8,6 @@ c:\users\natsu\onedrive\documentos\visual studio 2015\Projects\Pequeno Mercado\P
 c:\users\natsu\onedrive\documentos\visual studio 2015\Projects\Pequeno Mercado\Pequeno Mercado\obj\Debug\Pequeno Mercado.pdb
 C:\Users\Natsu\onedrive\documentos\visual studio 2015\Projects\Pequeno Mercado\Pequeno Mercado\obj\Debug\Pequeno_Mercado.Estoque.resources
 C:\Users\Natsu\onedrive\documentos\visual studio 2015\Projects\Pequeno Mercado\Pequeno Mercado\obj\Debug\Pequeno_Mercado.Compras.resources
+C:\Users\Natsu\Source\Repos\Mercadinho\Pequeno Mercado\Pequeno Mercado\bin\Debug\Pequeno Mercado.exe.config
+C:\Users\Natsu\Source\Repos\Mercadinho\Pequeno Mercado\Pequeno Mercado\obj\Debug\Pequeno Mercado.exe
+C:\Users\Natsu\Source\Repos\Mercadinho\Pequeno Mercado\Pequeno Mercado\obj\Debug\Pequeno Mercado.pdb

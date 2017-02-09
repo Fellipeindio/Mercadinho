@@ -1,0 +1,237 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Forms;
+using NamespaceProdutos;
+using NamespaceManipuladores;
+using NamespaceUsuarios;
+
+namespace Pequeno_Mercado
+{
+    public partial class Compras : Form
+    {
+        public Compras()
+        {
+            InitializeComponent();
+        }
+        int indice;
+        decimal valorTotal = 0.0m;
+        int[] quantProdutos;
+        ProdutoEstoque produtoSelecionado;
+
+        private void Compras_Shown(object sender, EventArgs e)
+        {
+            CarregarProdutosComboBox();
+            AlterarBtnCompraTxbQuantCompra(false);
+            // lista auxiliar do estoque
+            Dictionary<string,ProdutoEstoque> dicProdutos = ManipuladorDeArquivosEstoque.LerArquivo();
+            quantProdutos = new int[dicProdutos.Count]; int i = 0;
+            foreach (KeyValuePair<string,ProdutoEstoque> elemento in dicProdutos)
+            {
+                ProdutoEstoque produto = elemento.Value;
+                quantProdutos[i] = Convert.ToInt32(produto.Quantidade);
+                i++;
+            }
+        }
+
+        // Alteração de Estados
+
+        private void AlterarBtnCompraTxbQuantCompra(bool estado)
+        {
+            btnCompraProduto.Enabled = estado;
+            txbQuantidadeComprada.Enabled = estado;
+        }
+
+        // Validações
+
+        private void VerificaQuantidade(string quantidade, ProdutoEstoque estoque, int indice)
+        {
+            quantProdutos[indice] -= Convert.ToInt32(quantidade);
+            if (Convert.ToInt32(quantidade) < 0)
+            {
+                throw new ArgumentException();
+            }
+
+            // Comprando mais do q tem o estoque
+            if (Convert.ToInt32(quantidade) > Convert.ToInt32(estoque.Quantidade) || quantProdutos[indice] < 0)
+            {
+                quantProdutos[indice] += Convert.ToInt32(quantidade);
+                throw new QuantidadeinsuficienteException();
+            }
+
+        }
+
+        public bool FaltaDadosCompra(string cliente, string quantComprada)
+        {
+            if (quantComprada != "" && cliente != "" && cliente != "Insira o Nome do Cliente")
+            {
+                return true;
+            }
+            return false;
+        }
+
+        // Ações não envolvendo botões
+
+        private void CarregarProdutosComboBox()
+        {
+            cbxProdutosCompra.Items.Clear();
+            Dictionary<string, ProdutoEstoque> dicProdutos = ManipuladorDeArquivosEstoque.LerArquivo();
+            foreach (KeyValuePair<string, ProdutoEstoque> elemento in dicProdutos)
+            {
+                cbxProdutosCompra.Items.Add(elemento.Key);
+            }
+        }
+
+        private void LimparCamposCompra()
+        {
+            txbQuantidadeComprada.Text = "";
+            txbQuantidade.Text = "";
+        }
+
+        // Ações envolvendo botões ou textos
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void cbxProdutosCompra_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbxProdutosCompra.SelectedIndex >= 0)
+            {
+                Dictionary<string, ProdutoEstoque> lista = ManipuladorDeArquivosEstoque.LerArquivo();
+                produtoSelecionado = lista[(string)cbxProdutosCompra.SelectedItem];
+                txbQuantidade.Text = produtoSelecionado.Quantidade;
+            }
+            AlterarBtnCompraTxbQuantCompra(true);
+        }
+
+        private void txbCliente_Click(object sender, EventArgs e)
+        {
+            txbCliente.Text = "";
+        }
+
+        private void btnCompraProduto_Click(object sender, EventArgs e)
+        {
+            bool existe = false;
+            if (FaltaDadosCompra(txbCliente.Text, txbQuantidadeComprada.Text))
+            {
+                ProdutoComprado produtoComprado = new ProdutoComprado();
+                Dictionary<string,ProdutoEstoque> listaProdutos = ManipuladorDeArquivosEstoque.LerArquivo();
+                try
+                {
+                    // Exception
+                    VerificaQuantidade(txbQuantidadeComprada.Text, produtoSelecionado, indice);
+                    // Fim Exception
+                    foreach (ProdutoComprado produtoDaLista in lbxLista.Items)
+                    {
+                        if (produtoSelecionado.Nome.ToUpper() == produtoDaLista.Nome.ToUpper() && produtoSelecionado.Preco == produtoDaLista.Preco)
+                        {
+                            existe = true;
+                            ProdutoComprado produtoAcrescidoCompraDepois = produtoDaLista;
+                            int indiceExistente = lbxLista.Items.IndexOf(produtoDaLista);
+                            int acrescimoQuant = Convert.ToInt32(txbQuantidadeComprada.Text) + Convert.ToInt32(produtoDaLista.QuantidadeComprada);
+                            produtoAcrescidoCompraDepois.QuantidadeComprada = Convert.ToString(acrescimoQuant);
+                            lbxLista.Items.RemoveAt(indiceExistente);
+                            lbxLista.Items.Insert(indiceExistente, produtoAcrescidoCompraDepois);
+                            break;
+                        }
+                    }
+                    if (!existe)
+                    {
+                        produtoComprado.Nome = produtoSelecionado.Nome;
+                        produtoComprado.Preco = produtoSelecionado.Preco;
+                        produtoComprado.QuantidadeComprada = txbQuantidadeComprada.Text;
+                        lbxLista.Items.Add(produtoComprado);
+                    }
+                    valorTotal += Convert.ToDecimal(produtoSelecionado.Preco) * Convert.ToInt32(txbQuantidadeComprada.Text);
+                    txbValorTotal.Text = Convert.ToString(valorTotal);
+                    btnFinalizarCompra.Enabled = true;
+                }
+                catch (QuantidadeinsuficienteException ex)
+                {
+                    MessageBox.Show("Não tem quantidade suficiente em nosso estoque!", "Quantidade insuficiente");
+                }
+                catch (ArgumentException ex)
+                {
+                    MessageBox.Show("Nao é possivel comprar quantidade negativa", "Quantidade inválida");
+                }
+
+                LimparCamposCompra();
+                cbxProdutosCompra.Text = "";
+                btnCompraProduto.Enabled = false;
+            }
+            else
+            {
+                MessageBox.Show("Não é possível comprar produto com dados insuficientes!!", "Erro ao Comprar");
+            }
+        }
+
+        private void btnCancelacomprar_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Tem Certeza???", "Cancelando compra", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                Close();
+            }
+        }
+
+        private void btnFinalizarCompra_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Tem Certeza???", "Encerrar compra", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                Cliente cliente = new Cliente
+                {
+                    NomeComprador = txbCliente.Text,
+                    ValorCompra = txbValorTotal.Text
+                };
+                Dictionary<string, ProdutoComprado> compraLista = new Dictionary<string, ProdutoComprado>();
+                foreach (ProdutoComprado produtoCompra in lbxLista.Items)
+                {
+                    compraLista.Add(produtoCompra.Nome,produtoCompra);
+                }
+                ManipuladorDeArquivosCompra.EscreverAquivoCompra(compraLista, cliente);
+                //Retirar quantidade comprada
+                Dictionary<string,ProdutoEstoque> listaEstoque = ManipuladorDeArquivosEstoque.LerArquivo();
+                foreach (KeyValuePair<string,ProdutoComprado> elementoCompra in compraLista)
+                {
+                    ProdutoComprado compra = elementoCompra.Value;
+                    foreach (KeyValuePair<string, ProdutoEstoque> elementoEstoque in listaEstoque)
+                    {
+                        ProdutoEstoque estoque = elementoEstoque.Value;
+                        if (compra.Nome == estoque.Nome)
+                        {
+                            int sobraEstoque = Convert.ToInt32(estoque.Quantidade) - Convert.ToInt32(compra.QuantidadeComprada);
+                            estoque.Quantidade = Convert.ToString(sobraEstoque);
+                            break;
+                        }
+                    }
+                }
+                ManipuladorDeArquivosEstoque.EscreverAquivo(listaEstoque);
+                MessageBox.Show("Compra Efetuada!!! Encerrando janela!");
+                Close();
+            }
+            
+        }
+
+        private void Compras_Load(object sender, EventArgs e)
+        {
+        }
+
+        private void btnOkCliente_Click(object sender, EventArgs e)
+        {
+            if (txbCliente.Text != "" && txbCliente.Text != "Insira o Nome do Cliente")
+            {
+                cbxProdutosCompra.Enabled = true;
+                txbCliente.Enabled = false;
+            }
+            else
+            {
+                MessageBox.Show("Insira o nome do cliente, por favor!", "Falta de dados!");
+            }
+        }
+
+        private void txbCliente_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+    }
+}

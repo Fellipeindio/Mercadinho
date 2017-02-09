@@ -19,13 +19,14 @@ namespace NamespaceManipuladores
                 string linha;
                 linha = string.Format("Nome do Cliente: {0}, Valor da Compra: {1}", comprador.NomeComprador, comprador.ValorCompra);
                 sw.WriteLine(linha);
-                foreach (KeyValuePair<string,ProdutoComprado> elemento in dicProduto)
+                foreach (KeyValuePair<string, ProdutoComprado> elemento in dicProduto)
                 {
                     ProdutoComprado produto = elemento.Value;
-                    linha = string.Format("Produto: {0} - Preço: {1} - Quant. Comprada: {2}", produto.Nome, produto.Preco, produto.QuantidadeComprada);
+                    linha = string.Format("Produto: {0} - Marca: {1} - Preço: R${2} - Quant. Comprada: {2}", produto.Nome,produto.Marca ,produto.Preco, produto.QuantidadeComprada);
                     sw.WriteLine(linha); // escreve no arquivo texto
                 }
                 linha = "";
+                sw.WriteLine(linha);
                 sw.WriteLine(linha);
                 sw.Flush();
 
@@ -39,9 +40,9 @@ namespace NamespaceManipuladores
 
 
 
-        public static Dictionary<string,ProdutoEstoque> LerArquivo()
+        public static List<ProdutoEstoque> LerArquivo()
         {
-            Dictionary<string, ProdutoEstoque> dicProduto = new Dictionary<string, ProdutoEstoque>();
+            List<ProdutoEstoque> listaProduto = new List<ProdutoEstoque>();
             if (File.Exists(@EnderecoAquivo))
             {
                 using (StreamReader sr = File.OpenText(EnderecoAquivo)) // Ler arquivo e ja fecha o ponteiro
@@ -54,28 +55,28 @@ namespace NamespaceManipuladores
                         {
                             ProdutoEstoque produto = new ProdutoEstoque();
                             produto.Nome = linhaComSplit[0];
-                            produto.Preco = linhaComSplit[1];
-                            produto.Quantidade = linhaComSplit[2];
-                            dicProduto.Add(produto.Nome,produto);
+                            produto.Marca = linhaComSplit[1];
+                            produto.Preco = linhaComSplit[2];
+                            produto.Quantidade = linhaComSplit[3];
+                            listaProduto.Add(produto);
                         }
                     }
                 }
             }
 
-            return dicProduto;
+            return listaProduto;
         }
 
-        public static void EscreverAquivo(Dictionary<string,ProdutoEstoque> dicProduto)
+        public static void EscreverAquivo(List<ProdutoEstoque> listaProduto)
         {
 
             using (StreamWriter sw = new StreamWriter(@EnderecoAquivo, false))
             {
-                foreach (KeyValuePair<string,ProdutoEstoque> elemento in dicProduto)
+                foreach (ProdutoEstoque produto in listaProduto)
                 {
-                    ProdutoEstoque produto = elemento.Value;
                     decimal valorProduto = 0.0m;
                     valorProduto += Convert.ToDecimal(produto.Preco);
-                    string linha = string.Format("{0}-{1}-{2}", produto.Nome, valorProduto, produto.Quantidade);
+                    string linha = string.Format("{0}-{1}-{2}-{3}", produto.Nome, produto.Marca, valorProduto, produto.Quantidade);
                     sw.WriteLine(linha); // escreve no arquivo texto
                     valorProduto = 0.0m;
                 }

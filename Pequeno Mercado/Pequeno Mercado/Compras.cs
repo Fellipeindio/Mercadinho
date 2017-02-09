@@ -18,17 +18,16 @@ namespace Pequeno_Mercado
         decimal valorTotal = 0.0m;
         int[] quantProdutos;
         ProdutoEstoque produtoSelecionado;
+        List<ProdutoEstoque> listaProdutos;
 
         private void Compras_Shown(object sender, EventArgs e)
         {
             CarregarProdutosComboBox();
             AlterarBtnCompraTxbQuantCompra(false);
-            // lista auxiliar do estoque
-            Dictionary<string,ProdutoEstoque> dicProdutos = ManipuladorDeArquivosEstoque.LerArquivo();
-            quantProdutos = new int[dicProdutos.Count]; int i = 0;
-            foreach (KeyValuePair<string,ProdutoEstoque> elemento in dicProdutos)
+            // lista auxiliar do estoque 
+            quantProdutos = new int[listaProdutos.Count]; int i = 0;
+            foreach (ProdutoEstoque produto in listaProdutos)
             {
-                ProdutoEstoque produto = elemento.Value;
                 quantProdutos[i] = Convert.ToInt32(produto.Quantidade);
                 i++;
             }
@@ -75,10 +74,10 @@ namespace Pequeno_Mercado
         private void CarregarProdutosComboBox()
         {
             cbxProdutosCompra.Items.Clear();
-            Dictionary<string, ProdutoEstoque> dicProdutos = ManipuladorDeArquivosEstoque.LerArquivo();
-            foreach (KeyValuePair<string, ProdutoEstoque> elemento in dicProdutos)
+            listaProdutos = ManipuladorDeArquivosEstoque.LerArquivo();
+            foreach (ProdutoEstoque elemento in listaProdutos)
             {
-                cbxProdutosCompra.Items.Add(elemento.Key);
+                cbxProdutosCompra.Items.Add(elemento.Nome);
             }
         }
 
@@ -98,8 +97,8 @@ namespace Pequeno_Mercado
         {
             if (cbxProdutosCompra.SelectedIndex >= 0)
             {
-                Dictionary<string, ProdutoEstoque> lista = ManipuladorDeArquivosEstoque.LerArquivo();
-                produtoSelecionado = lista[(string)cbxProdutosCompra.SelectedItem];
+                indice = cbxProdutosCompra.SelectedIndex;
+                produtoSelecionado = listaProdutos[indice];
                 txbQuantidade.Text = produtoSelecionado.Quantidade;
             }
             AlterarBtnCompraTxbQuantCompra(true);
@@ -116,7 +115,6 @@ namespace Pequeno_Mercado
             if (FaltaDadosCompra(txbCliente.Text, txbQuantidadeComprada.Text))
             {
                 ProdutoComprado produtoComprado = new ProdutoComprado();
-                Dictionary<string,ProdutoEstoque> listaProdutos = ManipuladorDeArquivosEstoque.LerArquivo();
                 try
                 {
                     // Exception
@@ -190,22 +188,20 @@ namespace Pequeno_Mercado
                 }
                 ManipuladorDeArquivosCompra.EscreverAquivoCompra(compraLista, cliente);
                 //Retirar quantidade comprada
-                Dictionary<string,ProdutoEstoque> listaEstoque = ManipuladorDeArquivosEstoque.LerArquivo();
-                foreach (KeyValuePair<string,ProdutoComprado> elementoCompra in compraLista)
+                foreach (KeyValuePair<string,ProdutoComprado> elemento in compraLista)
                 {
-                    ProdutoComprado compra = elementoCompra.Value;
-                    foreach (KeyValuePair<string, ProdutoEstoque> elementoEstoque in listaEstoque)
+                    ProdutoComprado elementoCompra = elemento.Value;
+                    foreach (ProdutoEstoque elementoEstoque in listaProdutos)
                     {
-                        ProdutoEstoque estoque = elementoEstoque.Value;
-                        if (compra.Nome == estoque.Nome)
+                        if (elementoCompra.Nome == elementoEstoque.Nome && elementoCompra.Marca == elementoEstoque.Marca)
                         {
-                            int sobraEstoque = Convert.ToInt32(estoque.Quantidade) - Convert.ToInt32(compra.QuantidadeComprada);
-                            estoque.Quantidade = Convert.ToString(sobraEstoque);
+                            int sobraEstoque = Convert.ToInt32(elementoEstoque.Quantidade) - Convert.ToInt32(elementoCompra.QuantidadeComprada);
+                            elementoEstoque.Quantidade = Convert.ToString(sobraEstoque);
                             break;
                         }
                     }
                 }
-                ManipuladorDeArquivosEstoque.EscreverAquivo(listaEstoque);
+                ManipuladorDeArquivosEstoque.EscreverAquivo(listaProdutos);
                 MessageBox.Show("Compra Efetuada!!! Encerrando janela!");
                 Close();
             }

@@ -11,6 +11,7 @@ namespace Pequeno_Mercado
         private EnumAcao acao;
         int indice = 0;
         ProdutoEstoque produtoSelecionado;
+        List<ProdutoEstoque> listaProdutos;
 
         public Estoque()
         {
@@ -50,6 +51,7 @@ namespace Pequeno_Mercado
             lbQuantidade.Enabled = estado;
             lbNome.Enabled = estado;
             lbPreco.Enabled = estado;
+            lbMarca.Enabled = estado;
         }
 
         private void AlterarNomePrecoQuant(bool estado)
@@ -57,13 +59,14 @@ namespace Pequeno_Mercado
             txbNome.Enabled = estado;
             txbPreco.Enabled = estado;
             txbQuant.Enabled = estado;
+            txbMarca.Enabled = estado;
         }
 
         // Validações
 
-        public bool FaltaDados(string nome, string preco, string quantidade)
+        public bool FaltaDados(string nome, string preco, string quantidade, string marca)
         {
-            if (nome != "" || preco != "" || quantidade != "")
+            if (nome != "" || preco != "" || quantidade != "" || marca != "")
             {
                 return true;
             }
@@ -76,11 +79,11 @@ namespace Pequeno_Mercado
         {
             lbxProdutos.Items.Clear();
             cbxProdutos.Items.Clear();
-            Dictionary<string, ProdutoEstoque> dicProdutos = ManipuladorDeArquivosEstoque.LerArquivo();
-            foreach (KeyValuePair<string,ProdutoEstoque> elemento in dicProdutos)
+            listaProdutos = ManipuladorDeArquivosEstoque.LerArquivo();
+            foreach (ProdutoEstoque elemento in listaProdutos)
             {
-                cbxProdutos.Items.Add(elemento.Key);
-                lbxProdutos.Items.Add(elemento.Value);
+                cbxProdutos.Items.Add(elemento.Nome);
+                lbxProdutos.Items.Add(elemento);
             }
             if (cbxProdutos.Items.Count > 0)
             {
@@ -116,9 +119,8 @@ namespace Pequeno_Mercado
             int indiceExcluido = indice;
             if (MessageBox.Show("Tem Certeza???", "Pergunta", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                Dictionary<string, ProdutoEstoque> dicProduto = new Dictionary<string, ProdutoEstoque>();
-                dicProduto.Remove(produtoSelecionado.Nome);
-                ManipuladorDeArquivosEstoque.EscreverAquivo(dicProduto);
+                listaProdutos.RemoveAt(indice);
+                ManipuladorDeArquivosEstoque.EscreverAquivo(listaProdutos);
                 CarregarProdutos();
                 LimparCampos();
             }
@@ -129,34 +131,38 @@ namespace Pequeno_Mercado
         private void btnSalvar_Click(object sender, EventArgs e)
         {
             bool existe = false;
-            if (FaltaDados(txbNome.Text, txbPreco.Text, txbQuant.Text))
+            if (FaltaDados(txbNome.Text, txbPreco.Text, txbQuant.Text, txbMarca.Text))
             {
                 ProdutoEstoque produto = new ProdutoEstoque
                 {
                     Nome = txbNome.Text.ToUpper(),
                     Preco = txbPreco.Text,
-                    Quantidade = txbQuant.Text
+                    Quantidade = txbQuant.Text,
+                    Marca = txbMarca.Text
+
                 };
-                Dictionary<string, ProdutoEstoque> dicProduto = ManipuladorDeArquivosEstoque.LerArquivo();
-                if (dicProduto.ContainsKey(produto.Nome))
+                foreach (ProdutoEstoque item in listaProdutos)
                 {
-                    existe = true;
-                    ProdutoEstoque produtoExistente = dicProduto[produto.Nome];
-                    dicProduto.Remove(produto.Nome);
-                    int quantProdIgual = Convert.ToInt32(produtoExistente.Quantidade) + Convert.ToInt32(produto.Quantidade);
-                    produtoExistente.Quantidade = Convert.ToString(quantProdIgual);
-                    dicProduto.Add(produtoExistente.Nome, produtoExistente);
+                    if (item.Nome == txbNome.Text && item.Marca == txbMarca.Text)
+                    {
+                        existe = true;
+                        ProdutoEstoque produtoExistente = item;
+                        listaProdutos.Remove(item);
+                        int quantProdIgual = Convert.ToInt32(produtoExistente.Quantidade) + Convert.ToInt32(produto.Quantidade);
+                        produtoExistente.Quantidade = Convert.ToString(quantProdIgual);
+                        listaProdutos.Add(produtoExistente);
+                    }
                 }
                 if (acao == EnumAcao.ADICIONAR && !existe)
                 {
-                    dicProduto.Add(produto.Nome, produto);
+                    listaProdutos.Add(produto);
                 }
                 if (acao == EnumAcao.ALTERAR)
                 {
-                    dicProduto.Remove(produtoSelecionado.Nome);
-                    dicProduto.Add(produto.Nome, produto);
+                    listaProdutos.Remove(produtoSelecionado);
+                    listaProdutos.Add(produto);
                 }
-                ManipuladorDeArquivosEstoque.EscreverAquivo(dicProduto);
+                ManipuladorDeArquivosEstoque.EscreverAquivo(listaProdutos);
                 CarregarProdutos();
                 AlterarSalvarCancelar(false);
                 AlterarNomePrecoQuant(false);
@@ -195,9 +201,9 @@ namespace Pequeno_Mercado
         {
             if (cbxProdutos.SelectedIndex >= 0)
             {
-                Dictionary<string, ProdutoEstoque> lista = ManipuladorDeArquivosEstoque.LerArquivo();
-                produtoSelecionado = lista[(string)cbxProdutos.SelectedItem];
+                produtoSelecionado = listaProdutos[cbxProdutos.SelectedIndex];
                 txbNome.Text = produtoSelecionado.Nome;
+                txbMarca.Text = produtoSelecionado.Marca;
                 txbPreco.Text = produtoSelecionado.Preco;
                 txbQuant.Text = produtoSelecionado.Quantidade;
             }

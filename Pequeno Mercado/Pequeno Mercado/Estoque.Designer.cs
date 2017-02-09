@@ -46,6 +46,8 @@
             this.lbSeleciona = new System.Windows.Forms.Label();
             this.btnComprasProduto = new System.Windows.Forms.Button();
             this.btnSair = new System.Windows.Forms.Button();
+            this.lbMarca = new System.Windows.Forms.Label();
+            this.txbMarca = new System.Windows.Forms.TextBox();
             this.gbxOpçoes.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -126,7 +128,7 @@
             // 
             this.lbPreco.AutoSize = true;
             this.lbPreco.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.lbPreco.Location = new System.Drawing.Point(9, 262);
+            this.lbPreco.Location = new System.Drawing.Point(9, 282);
             this.lbPreco.Name = "lbPreco";
             this.lbPreco.Size = new System.Drawing.Size(127, 17);
             this.lbPreco.TabIndex = 7;
@@ -136,7 +138,7 @@
             // 
             this.lbQuantidade.AutoSize = true;
             this.lbQuantidade.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.lbQuantidade.Location = new System.Drawing.Point(9, 294);
+            this.lbQuantidade.Location = new System.Drawing.Point(9, 311);
             this.lbQuantidade.Name = "lbQuantidade";
             this.lbQuantidade.Size = new System.Drawing.Size(164, 17);
             this.lbQuantidade.TabIndex = 8;
@@ -151,16 +153,16 @@
             // 
             // txbPreco
             // 
-            this.txbPreco.Location = new System.Drawing.Point(133, 262);
+            this.txbPreco.Location = new System.Drawing.Point(137, 281);
             this.txbPreco.Name = "txbPreco";
             this.txbPreco.Size = new System.Drawing.Size(97, 20);
             this.txbPreco.TabIndex = 10;
             // 
             // txbQuant
             // 
-            this.txbQuant.Location = new System.Drawing.Point(175, 293);
+            this.txbQuant.Location = new System.Drawing.Point(175, 310);
             this.txbQuant.Name = "txbQuant";
-            this.txbQuant.Size = new System.Drawing.Size(49, 20);
+            this.txbQuant.Size = new System.Drawing.Size(59, 20);
             this.txbQuant.TabIndex = 11;
             this.txbQuant.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -211,9 +213,9 @@
             // btnComprasProduto
             // 
             this.btnComprasProduto.Enabled = false;
-            this.btnComprasProduto.Location = new System.Drawing.Point(269, 243);
+            this.btnComprasProduto.Location = new System.Drawing.Point(250, 282);
             this.btnComprasProduto.Name = "btnComprasProduto";
-            this.btnComprasProduto.Size = new System.Drawing.Size(56, 23);
+            this.btnComprasProduto.Size = new System.Drawing.Size(75, 23);
             this.btnComprasProduto.TabIndex = 14;
             this.btnComprasProduto.Text = "Compras";
             this.btnComprasProduto.UseVisualStyleBackColor = true;
@@ -221,7 +223,7 @@
             // 
             // btnSair
             // 
-            this.btnSair.Location = new System.Drawing.Point(250, 280);
+            this.btnSair.Location = new System.Drawing.Point(250, 311);
             this.btnSair.Name = "btnSair";
             this.btnSair.Size = new System.Drawing.Size(75, 23);
             this.btnSair.TabIndex = 15;
@@ -229,11 +231,30 @@
             this.btnSair.UseVisualStyleBackColor = true;
             this.btnSair.Click += new System.EventHandler(this.btnSair_Click);
             // 
+            // lblMarca
+            // 
+            this.lbMarca.AutoSize = true;
+            this.lbMarca.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.lbMarca.Location = new System.Drawing.Point(9, 255);
+            this.lbMarca.Name = "lblMarca";
+            this.lbMarca.Size = new System.Drawing.Size(125, 17);
+            this.lbMarca.TabIndex = 16;
+            this.lbMarca.Text = "Marca do Produto:";
+            // 
+            // txbMarca
+            // 
+            this.txbMarca.Location = new System.Drawing.Point(137, 254);
+            this.txbMarca.Name = "txbMarca";
+            this.txbMarca.Size = new System.Drawing.Size(113, 20);
+            this.txbMarca.TabIndex = 18;
+            // 
             // Estoque
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(337, 315);
+            this.ClientSize = new System.Drawing.Size(337, 339);
+            this.Controls.Add(this.txbMarca);
+            this.Controls.Add(this.lbMarca);
             this.Controls.Add(this.btnSair);
             this.Controls.Add(this.btnComprasProduto);
             this.Controls.Add(this.lbSeleciona);
@@ -276,6 +297,8 @@
         private System.Windows.Forms.Label lbSeleciona;
         private System.Windows.Forms.Button btnComprasProduto;
         private System.Windows.Forms.Button btnSair;
+        private System.Windows.Forms.Label lbMarca;
+        private System.Windows.Forms.TextBox txbMarca;
     }
 }
 

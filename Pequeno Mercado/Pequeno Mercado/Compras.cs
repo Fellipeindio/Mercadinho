@@ -114,7 +114,7 @@ namespace Pequeno_Mercado
             bool existe = false;
             if (FaltaDadosCompra(txbCliente.Text, txbQuantidadeComprada.Text))
             {
-                ProdutoComprado produtoComprado = new ProdutoComprado();
+                ProdutoComprado produto = new ProdutoComprado();
                 try
                 {
                     // Exception
@@ -122,24 +122,25 @@ namespace Pequeno_Mercado
                     // Fim Exception
                     foreach (ProdutoComprado produtoDaLista in lbxLista.Items)
                     {
-                        if (produtoSelecionado.Nome.ToUpper() == produtoDaLista.Nome.ToUpper() && produtoSelecionado.Preco == produtoDaLista.Preco)
+                        if (produtoSelecionado.Nome.ToUpper() == produtoDaLista.Nome.ToUpper() && produtoSelecionado.Marca == produtoDaLista.Marca)
                         {
                             existe = true;
-                            ProdutoComprado produtoAcrescidoCompraDepois = produtoDaLista;
+                            produto = produtoDaLista;
                             int indiceExistente = lbxLista.Items.IndexOf(produtoDaLista);
                             int acrescimoQuant = Convert.ToInt32(txbQuantidadeComprada.Text) + Convert.ToInt32(produtoDaLista.QuantidadeComprada);
-                            produtoAcrescidoCompraDepois.QuantidadeComprada = Convert.ToString(acrescimoQuant);
+                            produto.QuantidadeComprada = Convert.ToString(acrescimoQuant);
                             lbxLista.Items.RemoveAt(indiceExistente);
-                            lbxLista.Items.Insert(indiceExistente, produtoAcrescidoCompraDepois);
+                            lbxLista.Items.Insert(indiceExistente, produto);
                             break;
                         }
                     }
                     if (!existe)
                     {
-                        produtoComprado.Nome = produtoSelecionado.Nome;
-                        produtoComprado.Preco = produtoSelecionado.Preco;
-                        produtoComprado.QuantidadeComprada = txbQuantidadeComprada.Text;
-                        lbxLista.Items.Add(produtoComprado);
+                        produto.Nome = produtoSelecionado.Nome;
+                        produto.Marca = produtoSelecionado.Marca;
+                        produto.Preco = produtoSelecionado.Preco;
+                        produto.QuantidadeComprada = txbQuantidadeComprada.Text;
+                        lbxLista.Items.Add(produto);
                     }
                     valorTotal += Convert.ToDecimal(produtoSelecionado.Preco) * Convert.ToInt32(txbQuantidadeComprada.Text);
                     txbValorTotal.Text = Convert.ToString(valorTotal);

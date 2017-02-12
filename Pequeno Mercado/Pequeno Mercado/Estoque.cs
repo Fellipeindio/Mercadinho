@@ -117,7 +117,6 @@ namespace Pequeno_Mercado
 
         private void btnExcluir_Click(object sender, EventArgs e)
         {
-            int indiceExcluido = indice;
             if (MessageBox.Show("Tem Certeza???", "Pergunta", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 listaProdutos.RemoveAt(indice);
@@ -158,9 +157,9 @@ namespace Pequeno_Mercado
                 {
                     listaProdutos.Add(produto);
                 }
-                if (acao == EnumAcao.ALTERAR)
+                if (acao == EnumAcao.ALTERAR && !existe)
                 {
-                    listaProdutos.Remove(produtoSelecionado);
+                    listaProdutos.RemoveAt(indice);
                     listaProdutos.Add(produto);
                 }
                 ManipuladorDeArquivosEstoque.EscreverAquivo(listaProdutos);
@@ -202,7 +201,8 @@ namespace Pequeno_Mercado
         {
             if (cbxProdutos.SelectedIndex >= 0)
             {
-                produtoSelecionado = listaProdutos[cbxProdutos.SelectedIndex];
+                indice = cbxProdutos.SelectedIndex;
+                produtoSelecionado = listaProdutos[indice];
                 txbNome.Text = produtoSelecionado.Nome;
                 txbMarca.Text = produtoSelecionado.Marca;
                 txbPreco.Text = produtoSelecionado.Preco;

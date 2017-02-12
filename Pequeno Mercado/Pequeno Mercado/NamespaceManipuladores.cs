@@ -43,6 +43,7 @@ namespace NamespaceManipuladores
         public static List<ProdutoEstoque> LerArquivo()
         {
             List<ProdutoEstoque> listaProduto = new List<ProdutoEstoque>();
+            List<ProdutoEstoque> listaOrdenada = new List<ProdutoEstoque>();
             if (File.Exists(@EnderecoAquivo))
             {
                 using (StreamReader sr = File.OpenText(EnderecoAquivo)) // Ler arquivo e ja fecha o ponteiro
@@ -59,12 +60,17 @@ namespace NamespaceManipuladores
                             produto.Preco = linhaComSplit[2];
                             produto.Quantidade = linhaComSplit[3];
                             listaProduto.Add(produto);
+                            
                         }
                     }
                 }
             }
-
-            return listaProduto;
+            var ordenadoNome = listaProduto.OrderBy(p => p.Nome);
+            foreach (ProdutoEstoque item in ordenadoNome)
+            {
+                listaOrdenada.Add(item);
+            }
+            return listaOrdenada;
         }
 
         public static void EscreverAquivo(List<ProdutoEstoque> listaProduto)

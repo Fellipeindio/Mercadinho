@@ -27,7 +27,7 @@ namespace NamespaceProdutos
 
         public override string ToString()
         {
-            return string.Format("Nome: {0} - Marca: {1} - Preço: R${2} - Quantidade Comprada: {3} ", this.Nome,this.Marca, this.Preco, this.QuantidadeComprada);
+            return string.Format("Nome: {0} - Marca: {1} - Preço: R${2} - Quantidade Comprada: {3} ", Nome, Marca, Preco, QuantidadeComprada);
         }
 
     }
@@ -47,7 +47,7 @@ namespace NamespaceProdutos
 
         public override string ToString()
         {
-            return string.Format("Nome: {0} - Marca: {1} - Preço: R${2} - Quantidade: {3} ", this.Nome,this.Marca, this.Preco, this.Quantidade);
+            return string.Format("Nome: {0} - Marca: {1} - Preço: R${2} - Quantidade: {3} ", Nome, Marca, Preco, Quantidade);
         }
     }
 

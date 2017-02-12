@@ -100,6 +100,7 @@ namespace Pequeno_Mercado
             txbNome.Text = "";
             txbPreco.Text = "";
             txbQuant.Text = "";
+            txbMarca.Text = "";
         }
 
         //Ações envolvendo botôes

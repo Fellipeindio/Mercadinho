@@ -51,7 +51,7 @@ namespace NamespaceManipuladores
                     {
                         string linha = sr.ReadLine();
                         string[] linhaComSplit = linha.Split('-');
-                        if (linhaComSplit.Count() == 3)
+                        if (linhaComSplit.Count() == 4)
                         {
                             ProdutoEstoque produto = new ProdutoEstoque();
                             produto.Nome = linhaComSplit[0];

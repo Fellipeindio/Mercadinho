@@ -80,9 +80,11 @@ namespace Pequeno_Mercado
             lbxProdutos.Items.Clear();
             cbxProdutos.Items.Clear();
             listaProdutos = ManipuladorDeArquivosEstoque.LerArquivo();
+            string nomeMarca;
             foreach (ProdutoEstoque elemento in listaProdutos)
             {
-                cbxProdutos.Items.Add(elemento.Nome);
+                nomeMarca = elemento.Nome + "/" + elemento.Marca;
+                cbxProdutos.Items.Add(nomeMarca);
                 lbxProdutos.Items.Add(elemento);
             }
             if (cbxProdutos.Items.Count > 0)

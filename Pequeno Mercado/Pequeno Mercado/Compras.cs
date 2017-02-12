@@ -75,9 +75,11 @@ namespace Pequeno_Mercado
         {
             cbxProdutosCompra.Items.Clear();
             listaProdutos = ManipuladorDeArquivosEstoque.LerArquivo();
+            string nomeMarca;
             foreach (ProdutoEstoque elemento in listaProdutos)
             {
-                cbxProdutosCompra.Items.Add(elemento.Nome);
+                nomeMarca = elemento.Nome + "/" + elemento.Marca;
+                cbxProdutosCompra.Items.Add(nomeMarca);
             }
         }
 

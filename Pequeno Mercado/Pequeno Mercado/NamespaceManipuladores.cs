@@ -65,7 +65,7 @@ namespace NamespaceManipuladores
                     }
                 }
             }
-            var ordenadoNome = listaProduto.OrderBy(p => p.Nome);
+            var ordenadoNome = listaProduto.OrderBy(p => p.Nome).ThenBy(p => p.Marca);
             foreach (ProdutoEstoque item in ordenadoNome)
             {
                 listaOrdenada.Add(item);

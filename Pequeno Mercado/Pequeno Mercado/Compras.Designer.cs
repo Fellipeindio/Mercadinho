@@ -211,7 +211,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 301);
+            this.ClientSize = new System.Drawing.Size(284, 293);
             this.Controls.Add(this.btnOkCliente);
             this.Controls.Add(this.btnCompraProduto);
             this.Controls.Add(this.txbQuantidadeComprada);

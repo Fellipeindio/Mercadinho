@@ -90,7 +90,7 @@
             // 
             this.btnFinalizarCompra.Enabled = false;
             this.btnFinalizarCompra.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.btnFinalizarCompra.Location = new System.Drawing.Point(12, 266);
+            this.btnFinalizarCompra.Location = new System.Drawing.Point(12, 312);
             this.btnFinalizarCompra.Name = "btnFinalizarCompra";
             this.btnFinalizarCompra.Size = new System.Drawing.Size(113, 23);
             this.btnFinalizarCompra.TabIndex = 5;
@@ -101,7 +101,7 @@
             // btnCancelacomprar
             // 
             this.btnCancelacomprar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.btnCancelacomprar.Location = new System.Drawing.Point(140, 266);
+            this.btnCancelacomprar.Location = new System.Drawing.Point(140, 312);
             this.btnCancelacomprar.Name = "btnCancelacomprar";
             this.btnCancelacomprar.Size = new System.Drawing.Size(132, 23);
             this.btnCancelacomprar.TabIndex = 6;
@@ -113,16 +113,16 @@
             // 
             this.lbxLista.FormattingEnabled = true;
             this.lbxLista.HorizontalScrollbar = true;
-            this.lbxLista.Location = new System.Drawing.Point(83, 191);
+            this.lbxLista.Location = new System.Drawing.Point(69, 191);
             this.lbxLista.Name = "lbxLista";
-            this.lbxLista.Size = new System.Drawing.Size(189, 43);
+            this.lbxLista.Size = new System.Drawing.Size(203, 82);
             this.lbxLista.TabIndex = 7;
             // 
             // lbLista
             // 
             this.lbLista.AutoSize = true;
             this.lbLista.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.lbLista.Location = new System.Drawing.Point(26, 205);
+            this.lbLista.Location = new System.Drawing.Point(12, 224);
             this.lbLista.Name = "lbLista";
             this.lbLista.Size = new System.Drawing.Size(51, 20);
             this.lbLista.TabIndex = 9;
@@ -142,7 +142,7 @@
             // 
             this.lbValor.AutoSize = true;
             this.lbValor.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.lbValor.Location = new System.Drawing.Point(12, 237);
+            this.lbValor.Location = new System.Drawing.Point(12, 283);
             this.lbValor.Name = "lbValor";
             this.lbValor.Size = new System.Drawing.Size(157, 20);
             this.lbValor.TabIndex = 13;
@@ -152,7 +152,7 @@
             // 
             this.txbValorTotal.Enabled = false;
             this.txbValorTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.txbValorTotal.Location = new System.Drawing.Point(164, 237);
+            this.txbValorTotal.Location = new System.Drawing.Point(164, 283);
             this.txbValorTotal.Name = "txbValorTotal";
             this.txbValorTotal.Size = new System.Drawing.Size(103, 26);
             this.txbValorTotal.TabIndex = 14;
@@ -211,7 +211,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 293);
+            this.ClientSize = new System.Drawing.Size(284, 343);
             this.Controls.Add(this.btnOkCliente);
             this.Controls.Add(this.btnCompraProduto);
             this.Controls.Add(this.txbQuantidadeComprada);

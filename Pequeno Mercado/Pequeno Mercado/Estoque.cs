@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using NamespaceProdutos;
 using NamespaceManipuladores;
+using Pequeno_Mercado.ConexaoBanco;
+using System.Data;
 
 namespace Pequeno_Mercado
 {
@@ -28,7 +30,7 @@ namespace Pequeno_Mercado
             AlterarNomePrecoQuant(false);
             AlterarSalvarCancelar(false);
             AlterarSelecinaProduto(true);
-            CarregarProdutos();
+            CarregarProdutosDGV();
         }
 
         // Alteradores de estado
@@ -75,17 +77,22 @@ namespace Pequeno_Mercado
 
         // Ações não envolvendo botões
 
-        private void CarregarProdutos()
+        private void CarregarProdutosDGV()
         {
-            lbxProdutos.Items.Clear();
+            ProdutosDAO produtoDAO = new ProdutosDAO();
+            DataTable dataTable = produtoDAO.ReceberProdutos();
+            dgvProdutos.DataSource = dataTable;
+            dgvProdutos.Refresh();
+
             cbxProdutos.Items.Clear();
-            listaProdutos = ManipuladorDeArquivosEstoque.LerArquivo();
-            string nomeMarca;
-            foreach (ProdutoEstoque elemento in listaProdutos)
+            foreach (DataGridViewRow linha in dgvProdutos.Rows)
             {
-                nomeMarca = elemento.Nome + "/" + elemento.Marca;
-                cbxProdutos.Items.Add(nomeMarca);
-                lbxProdutos.Items.Add(elemento);
+
+                string nome = linha.Cells[1].Value.ToString();
+                string marca = linha.Cells[2].Value.ToString();
+                string nomeEMarca;
+                nomeEMarca = nome + "/" + marca;
+                cbxProdutos.Items.Add(nomeEMarca);
             }
             if (cbxProdutos.Items.Count > 0)
             {
@@ -123,11 +130,12 @@ namespace Pequeno_Mercado
             {
                 listaProdutos.RemoveAt(indice);
                 ManipuladorDeArquivosEstoque.EscreverAquivo(listaProdutos);
-                CarregarProdutos();
+                CarregarProdutosDGV();
                 LimparCampos();
             }
             btnAdicionar.Enabled = true;
             AlterarExcluirAlterar(false);
+            AlterarSelecinaProduto(true);
         }
 
         private void btnSalvar_Click(object sender, EventArgs e)
@@ -138,22 +146,26 @@ namespace Pequeno_Mercado
                 ProdutoEstoque produto = new ProdutoEstoque
                 {
                     Nome = txbNome.Text.ToUpper(),
+                    Marca = txbMarca.Text.ToUpper(),
                     Preco = txbPreco.Text,
-                    Quantidade = txbQuant.Text,
-                    Marca = txbMarca.Text
+                    Quantidade = txbQuant.Text
 
                 };
                 foreach (ProdutoEstoque item in listaProdutos)
                 {
-                    if (item.Nome == txbNome.Text && item.Marca == txbMarca.Text)
+                    if (item.Nome == txbNome.Text && item.Marca == txbMarca.Text && item.Preco == txbPreco.Text)
                     {
                         existe = true;
-                        ProdutoEstoque produtoExistente = item;
-                        listaProdutos.Remove(item);
-                        int quantProdIgual = Convert.ToInt32(produtoExistente.Quantidade) + Convert.ToInt32(produto.Quantidade);
-                        produtoExistente.Quantidade = Convert.ToString(quantProdIgual);
-                        listaProdutos.Add(produtoExistente);
+                        break;
                     }
+                }
+                if (existe)
+                {
+                    ProdutoEstoque produtoExistente = produto;
+                    listaProdutos.RemoveAt(indice);
+                    int quantProdIgual = Convert.ToInt32(produtoExistente.Quantidade) + Convert.ToInt32(produto.Quantidade);
+                    produtoExistente.Quantidade = Convert.ToString(quantProdIgual);
+                    listaProdutos.Add(produtoExistente);
                 }
                 if (acao == EnumAcao.ADICIONAR && !existe)
                 {
@@ -165,7 +177,7 @@ namespace Pequeno_Mercado
                     listaProdutos.Add(produto);
                 }
                 ManipuladorDeArquivosEstoque.EscreverAquivo(listaProdutos);
-                CarregarProdutos();
+                CarregarProdutosDGV();
                 AlterarSalvarCancelar(false);
                 AlterarNomePrecoQuant(false);
                 AlterarSelecinaProduto(true);
@@ -210,7 +222,7 @@ namespace Pequeno_Mercado
                 txbPreco.Text = produtoSelecionado.Preco;
                 txbQuant.Text = produtoSelecionado.Quantidade;
             }
-            CarregarProdutos();
+            CarregarProdutosDGV();
             AlterarSelecinaProduto(false);
             AlterarExcluirAlterar(true);
             btnAdicionar.Enabled = false;

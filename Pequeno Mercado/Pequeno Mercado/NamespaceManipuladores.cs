@@ -55,8 +55,8 @@ namespace NamespaceManipuladores
                         if (linhaComSplit.Count() == 4)
                         {
                             ProdutoEstoque produto = new ProdutoEstoque();
-                            produto.Nome = linhaComSplit[0];
-                            produto.Marca = linhaComSplit[1];
+                            produto.Nome = linhaComSplit[0].ToUpper();
+                            produto.Marca = linhaComSplit[1].ToUpper();
                             produto.Preco = linhaComSplit[2];
                             produto.Quantidade = linhaComSplit[3];
                             listaProduto.Add(produto);

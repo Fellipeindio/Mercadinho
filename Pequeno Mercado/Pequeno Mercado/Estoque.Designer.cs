@@ -35,8 +35,6 @@
             this.txbNome = new System.Windows.Forms.TextBox();
             this.txbPreco = new System.Windows.Forms.TextBox();
             this.txbQuant = new System.Windows.Forms.TextBox();
-            this.cbxProdutos = new System.Windows.Forms.ComboBox();
-            this.lbSeleciona = new System.Windows.Forms.Label();
             this.btnComprasProduto = new System.Windows.Forms.Button();
             this.lbMarca = new System.Windows.Forms.Label();
             this.txbMarca = new System.Windows.Forms.TextBox();
@@ -47,6 +45,8 @@
             this.btnSalvar = new System.Windows.Forms.Button();
             this.gbxOpçoes = new System.Windows.Forms.GroupBox();
             this.dgvProdutos = new System.Windows.Forms.DataGridView();
+            this.cbxProdutos = new System.Windows.Forms.ComboBox();
+            this.lbSeleciona = new System.Windows.Forms.Label();
             this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NomeProduto = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Marca = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -70,7 +70,7 @@
             // 
             this.lbNome.AutoSize = true;
             this.lbNome.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.lbNome.Location = new System.Drawing.Point(9, 257);
+            this.lbNome.Location = new System.Drawing.Point(57, 264);
             this.lbNome.Name = "lbNome";
             this.lbNome.Size = new System.Drawing.Size(127, 17);
             this.lbNome.TabIndex = 6;
@@ -81,7 +81,7 @@
             // 
             this.lbPreco.AutoSize = true;
             this.lbPreco.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.lbPreco.Location = new System.Drawing.Point(9, 312);
+            this.lbPreco.Location = new System.Drawing.Point(57, 319);
             this.lbPreco.Name = "lbPreco";
             this.lbPreco.Size = new System.Drawing.Size(127, 17);
             this.lbPreco.TabIndex = 7;
@@ -91,7 +91,7 @@
             // 
             this.lbQuantidade.AutoSize = true;
             this.lbQuantidade.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.lbQuantidade.Location = new System.Drawing.Point(9, 341);
+            this.lbQuantidade.Location = new System.Drawing.Point(57, 348);
             this.lbQuantidade.Name = "lbQuantidade";
             this.lbQuantidade.Size = new System.Drawing.Size(164, 17);
             this.lbQuantidade.TabIndex = 8;
@@ -99,49 +99,30 @@
             // 
             // txbNome
             // 
-            this.txbNome.Location = new System.Drawing.Point(137, 257);
+            this.txbNome.Location = new System.Drawing.Point(185, 264);
             this.txbNome.Name = "txbNome";
             this.txbNome.Size = new System.Drawing.Size(113, 20);
             this.txbNome.TabIndex = 9;
             // 
             // txbPreco
             // 
-            this.txbPreco.Location = new System.Drawing.Point(137, 311);
+            this.txbPreco.Location = new System.Drawing.Point(185, 318);
             this.txbPreco.Name = "txbPreco";
             this.txbPreco.Size = new System.Drawing.Size(113, 20);
             this.txbPreco.TabIndex = 10;
             // 
             // txbQuant
             // 
-            this.txbQuant.Location = new System.Drawing.Point(175, 340);
+            this.txbQuant.Location = new System.Drawing.Point(223, 347);
             this.txbQuant.Name = "txbQuant";
             this.txbQuant.Size = new System.Drawing.Size(59, 20);
             this.txbQuant.TabIndex = 11;
             this.txbQuant.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // cbxProdutos
-            // 
-            this.cbxProdutos.FormattingEnabled = true;
-            this.cbxProdutos.Location = new System.Drawing.Point(175, 224);
-            this.cbxProdutos.Name = "cbxProdutos";
-            this.cbxProdutos.Size = new System.Drawing.Size(107, 21);
-            this.cbxProdutos.TabIndex = 13;
-            this.cbxProdutos.SelectedIndexChanged += new System.EventHandler(this.cbxProdutos_SelectedIndexChanged);
-            // 
-            // lbSeleciona
-            // 
-            this.lbSeleciona.AutoSize = true;
-            this.lbSeleciona.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.lbSeleciona.Location = new System.Drawing.Point(29, 225);
-            this.lbSeleciona.Name = "lbSeleciona";
-            this.lbSeleciona.Size = new System.Drawing.Size(144, 17);
-            this.lbSeleciona.TabIndex = 0;
-            this.lbSeleciona.Text = "Selecione o Produto: ";
-            // 
             // btnComprasProduto
             // 
             this.btnComprasProduto.Enabled = false;
-            this.btnComprasProduto.Location = new System.Drawing.Point(250, 335);
+            this.btnComprasProduto.Location = new System.Drawing.Point(307, 344);
             this.btnComprasProduto.Name = "btnComprasProduto";
             this.btnComprasProduto.Size = new System.Drawing.Size(75, 23);
             this.btnComprasProduto.TabIndex = 14;
@@ -153,7 +134,7 @@
             // 
             this.lbMarca.AutoSize = true;
             this.lbMarca.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.lbMarca.Location = new System.Drawing.Point(9, 285);
+            this.lbMarca.Location = new System.Drawing.Point(57, 292);
             this.lbMarca.Name = "lbMarca";
             this.lbMarca.Size = new System.Drawing.Size(125, 17);
             this.lbMarca.TabIndex = 16;
@@ -161,14 +142,14 @@
             // 
             // txbMarca
             // 
-            this.txbMarca.Location = new System.Drawing.Point(137, 284);
+            this.txbMarca.Location = new System.Drawing.Point(185, 291);
             this.txbMarca.Name = "txbMarca";
             this.txbMarca.Size = new System.Drawing.Size(113, 20);
             this.txbMarca.TabIndex = 18;
             // 
             // btnCancelar
             // 
-            this.btnCancelar.Location = new System.Drawing.Point(215, 48);
+            this.btnCancelar.Location = new System.Drawing.Point(221, 48);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(75, 23);
             this.btnCancelar.TabIndex = 5;
@@ -179,7 +160,7 @@
             // btnExcluir
             // 
             this.btnExcluir.Enabled = false;
-            this.btnExcluir.Location = new System.Drawing.Point(297, 19);
+            this.btnExcluir.Location = new System.Drawing.Point(295, 19);
             this.btnExcluir.Name = "btnExcluir";
             this.btnExcluir.Size = new System.Drawing.Size(75, 23);
             this.btnExcluir.TabIndex = 3;
@@ -200,7 +181,7 @@
             // btnAlterar
             // 
             this.btnAlterar.Enabled = false;
-            this.btnAlterar.Location = new System.Drawing.Point(163, 19);
+            this.btnAlterar.Location = new System.Drawing.Point(153, 19);
             this.btnAlterar.Name = "btnAlterar";
             this.btnAlterar.Size = new System.Drawing.Size(75, 23);
             this.btnAlterar.TabIndex = 12;
@@ -210,7 +191,7 @@
             // 
             // btnSalvar
             // 
-            this.btnSalvar.Location = new System.Drawing.Point(98, 48);
+            this.btnSalvar.Location = new System.Drawing.Point(86, 48);
             this.btnSalvar.Name = "btnSalvar";
             this.btnSalvar.Size = new System.Drawing.Size(75, 23);
             this.btnSalvar.TabIndex = 4;
@@ -225,9 +206,9 @@
             this.gbxOpçoes.Controls.Add(this.btnAdicionar);
             this.gbxOpçoes.Controls.Add(this.btnExcluir);
             this.gbxOpçoes.Controls.Add(this.btnCancelar);
-            this.gbxOpçoes.Location = new System.Drawing.Point(12, 142);
+            this.gbxOpçoes.Location = new System.Drawing.Point(12, 148);
             this.gbxOpçoes.Name = "gbxOpçoes";
-            this.gbxOpçoes.Size = new System.Drawing.Size(378, 76);
+            this.gbxOpçoes.Size = new System.Drawing.Size(379, 76);
             this.gbxOpçoes.TabIndex = 13;
             this.gbxOpçoes.TabStop = false;
             this.gbxOpçoes.Text = "Opções";
@@ -247,13 +228,33 @@
             this.dgvProdutos.Location = new System.Drawing.Point(12, 37);
             this.dgvProdutos.Name = "dgvProdutos";
             this.dgvProdutos.ReadOnly = true;
-            this.dgvProdutos.Size = new System.Drawing.Size(378, 105);
+            this.dgvProdutos.Size = new System.Drawing.Size(379, 105);
             this.dgvProdutos.TabIndex = 19;
+            this.dgvProdutos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvProdutos_CellContentClick);
+            // 
+            // cbxProdutos
+            // 
+            this.cbxProdutos.FormattingEnabled = true;
+            this.cbxProdutos.Location = new System.Drawing.Point(223, 234);
+            this.cbxProdutos.Name = "cbxProdutos";
+            this.cbxProdutos.Size = new System.Drawing.Size(107, 21);
+            this.cbxProdutos.TabIndex = 13;
+            this.cbxProdutos.SelectedIndexChanged += new System.EventHandler(this.cbxProdutos_SelectedIndexChanged);
+            // 
+            // lbSeleciona
+            // 
+            this.lbSeleciona.AutoSize = true;
+            this.lbSeleciona.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.lbSeleciona.Location = new System.Drawing.Point(77, 235);
+            this.lbSeleciona.Name = "lbSeleciona";
+            this.lbSeleciona.Size = new System.Drawing.Size(144, 17);
+            this.lbSeleciona.TabIndex = 0;
+            this.lbSeleciona.Text = "Selecione o Produto: ";
             // 
             // ID
             // 
             this.ID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.ID.DataPropertyName = "Codigo do Produto";
+            this.ID.DataPropertyName = "Codigo";
             this.ID.HeaderText = "Codigo";
             this.ID.Name = "ID";
             this.ID.ReadOnly = true;
@@ -262,7 +263,7 @@
             // NomeProduto
             // 
             this.NomeProduto.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.NomeProduto.DataPropertyName = "Nome do Produto";
+            this.NomeProduto.DataPropertyName = "Nome";
             this.NomeProduto.HeaderText = "Nome";
             this.NomeProduto.Name = "NomeProduto";
             this.NomeProduto.ReadOnly = true;
@@ -271,7 +272,7 @@
             // Marca
             // 
             this.Marca.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.Marca.DataPropertyName = "Marca do Produto";
+            this.Marca.DataPropertyName = "Marca";
             this.Marca.HeaderText = "Marca";
             this.Marca.Name = "Marca";
             this.Marca.ReadOnly = true;
@@ -280,7 +281,7 @@
             // Preço
             // 
             this.Preço.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.Preço.DataPropertyName = "Preco do Produto";
+            this.Preço.DataPropertyName = "Preco";
             this.Preço.HeaderText = "Preço";
             this.Preço.Name = "Preço";
             this.Preço.ReadOnly = true;
@@ -289,7 +290,7 @@
             // Quantidade
             // 
             this.Quantidade.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.Quantidade.DataPropertyName = "Quantidade no Estoque";
+            this.Quantidade.DataPropertyName = "Quantidade";
             this.Quantidade.HeaderText = "Quantidade";
             this.Quantidade.Name = "Quantidade";
             this.Quantidade.ReadOnly = true;
@@ -299,7 +300,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(394, 374);
+            this.ClientSize = new System.Drawing.Size(402, 374);
             this.Controls.Add(this.dgvProdutos);
             this.Controls.Add(this.txbMarca);
             this.Controls.Add(this.lbMarca);
@@ -316,6 +317,7 @@
             this.Controls.Add(this.lbEstoque);
             this.Name = "Estoque";
             this.Text = "Mercadinho";
+            this.Load += new System.EventHandler(this.Estoque_Load);
             this.Shown += new System.EventHandler(this.Estoque_Shown);
             this.gbxOpçoes.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvProdutos)).EndInit();
@@ -333,8 +335,6 @@
         private System.Windows.Forms.TextBox txbNome;
         private System.Windows.Forms.TextBox txbPreco;
         private System.Windows.Forms.TextBox txbQuant;
-        private System.Windows.Forms.ComboBox cbxProdutos;
-        private System.Windows.Forms.Label lbSeleciona;
         private System.Windows.Forms.Button btnComprasProduto;
         private System.Windows.Forms.Label lbMarca;
         private System.Windows.Forms.TextBox txbMarca;
@@ -345,6 +345,8 @@
         private System.Windows.Forms.Button btnSalvar;
         private System.Windows.Forms.GroupBox gbxOpçoes;
         private System.Windows.Forms.DataGridView dgvProdutos;
+        private System.Windows.Forms.ComboBox cbxProdutos;
+        private System.Windows.Forms.Label lbSeleciona;
         private System.Windows.Forms.DataGridViewTextBoxColumn ID;
         private System.Windows.Forms.DataGridViewTextBoxColumn NomeProduto;
         private System.Windows.Forms.DataGridViewTextBoxColumn Marca;

@@ -13,7 +13,7 @@ namespace Pequeno_Mercado
         private EnumAcao acao;
         int indice = 0;
         ProdutoEstoque produtoSelecionado;
-        List<ProdutoEstoque> listaProdutos;
+        List<ProdutoEstoque> listaProdutos = new List<ProdutoEstoque>();
 
         public Estoque()
         {
@@ -80,6 +80,7 @@ namespace Pequeno_Mercado
         private void CarregarProdutosDGV()
         {
             ProdutosDAO produtoDAO = new ProdutosDAO();
+            ProdutoEstoque produto = new ProdutoEstoque();
             DataTable dataTable = produtoDAO.ReceberProdutos();
             dgvProdutos.DataSource = dataTable;
             dgvProdutos.Refresh();
@@ -87,12 +88,15 @@ namespace Pequeno_Mercado
             cbxProdutos.Items.Clear();
             foreach (DataGridViewRow linha in dgvProdutos.Rows)
             {
-
-                string nome = linha.Cells[1].Value.ToString();
-                string marca = linha.Cells[2].Value.ToString();
+                produto.Codigo = (int)linha.Cells[0].Value;
+                produto.Nome = linha.Cells[1].Value.ToString();
+                produto.Marca = linha.Cells[2].Value.ToString();
+                produto.Preco = linha.Cells[3].Value.ToString();
+                produto.Quantidade = linha.Cells[4].Value.ToString();
                 string nomeEMarca;
-                nomeEMarca = nome + "/" + marca;
+                nomeEMarca = produto.Nome + "/" + produto.Marca;
                 cbxProdutos.Items.Add(nomeEMarca);
+                listaProdutos.Add(produto);
             }
             if (cbxProdutos.Items.Count > 0)
             {
@@ -128,8 +132,9 @@ namespace Pequeno_Mercado
         {
             if (MessageBox.Show("Tem Certeza???", "Pergunta", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                listaProdutos.RemoveAt(indice);
-                ManipuladorDeArquivosEstoque.EscreverAquivo(listaProdutos);
+                int id = (int)dgvProdutos.CurrentRow.Cells[0].Value;
+                ProdutosDAO produto = new ProdutosDAO();
+                produto.Excluir(id);
                 CarregarProdutosDGV();
                 LimparCampos();
             }
@@ -140,9 +145,9 @@ namespace Pequeno_Mercado
 
         private void btnSalvar_Click(object sender, EventArgs e)
         {
-            bool existe = false;
             if (FaltaDados(txbNome.Text, txbPreco.Text, txbQuant.Text, txbMarca.Text))
             {
+                ProdutosDAO produtoDAO = new ProdutosDAO();
                 ProdutoEstoque produto = new ProdutoEstoque
                 {
                     Nome = txbNome.Text.ToUpper(),
@@ -155,28 +160,22 @@ namespace Pequeno_Mercado
                 {
                     if (item.Nome == txbNome.Text && item.Marca == txbMarca.Text && item.Preco == txbPreco.Text)
                     {
-                        existe = true;
+                        ProdutoEstoque produtoExistente = produto;
+                        int quantProdIgual = Convert.ToInt32(produtoExistente.Quantidade) + Convert.ToInt32(produto.Quantidade);
+                        produto.Quantidade = Convert.ToString(quantProdIgual);
+                        acao = EnumAcao.ALTERAR;
                         break;
                     }
                 }
-                if (existe)
+                if (acao == EnumAcao.ADICIONAR)
                 {
-                    ProdutoEstoque produtoExistente = produto;
-                    listaProdutos.RemoveAt(indice);
-                    int quantProdIgual = Convert.ToInt32(produtoExistente.Quantidade) + Convert.ToInt32(produto.Quantidade);
-                    produtoExistente.Quantidade = Convert.ToString(quantProdIgual);
-                    listaProdutos.Add(produtoExistente);
+
+                    produtoDAO.Inserir(produto);
                 }
-                if (acao == EnumAcao.ADICIONAR && !existe)
+                if (acao == EnumAcao.ALTERAR)
                 {
-                    listaProdutos.Add(produto);
-                }
-                if (acao == EnumAcao.ALTERAR && !existe)
-                {
-                    listaProdutos.RemoveAt(indice);
-                    listaProdutos.Add(produto);
-                }
-                ManipuladorDeArquivosEstoque.EscreverAquivo(listaProdutos);
+                    produtoDAO.Atualizar(produto);
+                }                
                 CarregarProdutosDGV();
                 AlterarSalvarCancelar(false);
                 AlterarNomePrecoQuant(false);
@@ -238,6 +237,16 @@ namespace Pequeno_Mercado
         private void btnSair_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void Estoque_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dgvProdutos_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

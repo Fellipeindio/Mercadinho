@@ -76,7 +76,6 @@ namespace Pequeno_Mercado
         }
 
         // Ações não envolvendo botões
-
         private void CarregarProdutosDGV()
         {
             ProdutosDAO produtoDAO = new ProdutosDAO();
@@ -84,19 +83,37 @@ namespace Pequeno_Mercado
             DataTable dataTable = produtoDAO.ReceberProdutos();
             dgvProdutos.DataSource = dataTable;
             dgvProdutos.Refresh();
-
             cbxProdutos.Items.Clear();
-            foreach (DataGridViewRow linha in dgvProdutos.Rows)
+            if (produtoDAO.ContarUsuarios() != 0)
             {
-                produto.Codigo = (int)linha.Cells[0].Value;
-                produto.Nome = linha.Cells[1].Value.ToString();
-                produto.Marca = linha.Cells[2].Value.ToString();
-                produto.Preco = linha.Cells[3].Value.ToString();
-                produto.Quantidade = linha.Cells[4].Value.ToString();
-                string nomeEMarca;
-                nomeEMarca = produto.Nome + "/" + produto.Marca;
-                cbxProdutos.Items.Add(nomeEMarca);
-                listaProdutos.Add(produto);
+                foreach (DataGridViewRow linha in dgvProdutos.Rows)
+                {
+                    produto.Codigo = (int)linha.Cells[0].Value;
+                    produto.Nome = linha.Cells[1].Value.ToString();
+                    produto.Marca = linha.Cells[2].Value.ToString();
+                    produto.Preco = linha.Cells[3].Value.ToString();
+                    produto.Quantidade = linha.Cells[4].Value.ToString();
+                    listaProdutos.Add(produto);
+                }
+                produtoDAO.AtualizarID(listaProdutos);
+                dataTable = produtoDAO.ReceberProdutos();
+                dgvProdutos.DataSource = dataTable;
+                dgvProdutos.Refresh();
+            }
+            else
+            {
+                foreach (DataGridViewRow linha in dgvProdutos.Rows)
+                {
+                    produto.Codigo = (int)linha.Cells[0].Value;
+                    produto.Nome = linha.Cells[1].Value.ToString();
+                    produto.Marca = linha.Cells[2].Value.ToString();
+                    produto.Preco = linha.Cells[3].Value.ToString();
+                    produto.Quantidade = linha.Cells[4].Value.ToString();
+                    string nomeEMarca;
+                    nomeEMarca = produto.Nome + "/" + produto.Marca;
+                    cbxProdutos.Items.Add(nomeEMarca);
+                    listaProdutos.Add(produto);
+                }
             }
             if (cbxProdutos.Items.Count > 0)
             {
@@ -133,8 +150,8 @@ namespace Pequeno_Mercado
             if (MessageBox.Show("Tem Certeza???", "Pergunta", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 int id = (int)dgvProdutos.CurrentRow.Cells[0].Value;
-                ProdutosDAO produto = new ProdutosDAO();
-                produto.Excluir(id);
+                ProdutosDAO produtoDAO = new ProdutosDAO();
+                produtoDAO.Excluir(id);
                 CarregarProdutosDGV();
                 LimparCampos();
             }
@@ -154,7 +171,6 @@ namespace Pequeno_Mercado
                     Marca = txbMarca.Text.ToUpper(),
                     Preco = txbPreco.Text,
                     Quantidade = txbQuant.Text
-
                 };
                 foreach (ProdutoEstoque item in listaProdutos)
                 {
@@ -174,8 +190,9 @@ namespace Pequeno_Mercado
                 }
                 if (acao == EnumAcao.ALTERAR)
                 {
+                    produto.Codigo = (int)dgvProdutos.CurrentRow.Cells[0].Value;
                     produtoDAO.Atualizar(produto);
-                }                
+                }
                 CarregarProdutosDGV();
                 AlterarSalvarCancelar(false);
                 AlterarNomePrecoQuant(false);

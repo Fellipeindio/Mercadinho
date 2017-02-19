@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using NamespaceProdutos;
 using NamespaceManipuladores;
 using NamespaceUsuarios;
+using Pequeno_Mercado.ConexaoBanco;
 
 namespace Pequeno_Mercado
 {
@@ -18,7 +19,7 @@ namespace Pequeno_Mercado
         decimal valorTotal = 0.0m;
         int[] quantProdutos;
         ProdutoEstoque produtoSelecionado;
-        List<ProdutoEstoque> listaProdutos;
+        List<ProdutoEstoque> listaProdutos = new List<ProdutoEstoque>();
 
         private void Compras_Shown(object sender, EventArgs e)
         {
@@ -73,14 +74,16 @@ namespace Pequeno_Mercado
 
         private void CarregarProdutosComboBox()
         {
+            ProdutosDAO produtoDAO = new ProdutosDAO();
             cbxProdutosCompra.Items.Clear();
-            listaProdutos = ManipuladorDeArquivosEstoque.LerArquivo();
+            listaProdutos = produtoDAO.RetornaLista();
             string nomeMarca;
             foreach (ProdutoEstoque elemento in listaProdutos)
             {
                 nomeMarca = elemento.Nome + "/" + elemento.Marca;
                 cbxProdutosCompra.Items.Add(nomeMarca);
             }
+
         }
 
         private void LimparCamposCompra()

@@ -79,5 +79,25 @@ namespace Pequeno_Mercado.ConexaoBanco
             comando.Parameters.Add(DAOUtils.ReceberParametro("@codigo", produto.Codigo));
             comando.ExecuteNonQuery();
         }
+
+        public List<ProdutoEstoque> RetornaLista()
+        {
+            List<ProdutoEstoque> Produtos = new List<ProdutoEstoque>();
+            ProdutoEstoque produto = new ProdutoEstoque();
+            DbConnection conexao = DAOUtils.ReceberConexao();
+            DbCommand comando = DAOUtils.ReceberComando(conexao);
+            comando.CommandType = CommandType.Text;
+            comando.CommandText = "SELECT * FROM Estoque";
+            DbDataReader leitor = comando.ExecuteReader();
+            while (leitor.Read())
+            {
+                produto.Nome = (string)leitor["Nome"];
+                produto.Marca = (string)leitor["Marca"];
+                produto.Preco = (string)leitor["Preco"];
+                produto.Quantidade = (string)leitor["Quantidade"];
+                Produtos.Add(produto);
+            }
+            return Produtos;
+        }
     }
 }

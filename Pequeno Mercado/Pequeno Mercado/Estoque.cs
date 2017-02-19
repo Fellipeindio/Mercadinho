@@ -11,8 +11,6 @@ namespace Pequeno_Mercado
     public partial class Estoque : Form
     {
         private EnumAcao acao;
-        int indice = 0;
-        ProdutoEstoque produtoSelecionado;
         List<ProdutoEstoque> listaProdutos = new List<ProdutoEstoque>();
 
         public Estoque()
@@ -29,18 +27,15 @@ namespace Pequeno_Mercado
         {
             AlterarNomePrecoQuant(false);
             AlterarSalvarCancelar(false);
-            AlterarSelecinaProduto(true);
             CarregarProdutosDGV();
         }
 
         // Alteradores de estado
-
-        private void AlterarSelecinaProduto(bool estado)
+        private void AlterarAdicionarExcluir(bool estado)
         {
-            cbxProdutos.Enabled = estado;
-            lbSeleciona.Enabled = estado;
+            btnAdicionar.Enabled = estado;
+            btnExcluir.Enabled = estado;
         }
-
         private void AlterarExcluirAlterar(bool estado)
         {
             btnExcluir.Enabled = estado;
@@ -78,50 +73,31 @@ namespace Pequeno_Mercado
         // Ações não envolvendo botões
         private void CarregarProdutosDGV()
         {
+
             ProdutosDAO produtoDAO = new ProdutosDAO();
             ProdutoEstoque produto = new ProdutoEstoque();
             DataTable dataTable = produtoDAO.ReceberProdutos();
             dgvProdutos.DataSource = dataTable;
             dgvProdutos.Refresh();
-            cbxProdutos.Items.Clear();
-            if (produtoDAO.ContarUsuarios() != 0)
+            foreach (DataGridViewRow linha in dgvProdutos.Rows)
             {
-                foreach (DataGridViewRow linha in dgvProdutos.Rows)
-                {
-                    produto.Codigo = (int)linha.Cells[0].Value;
-                    produto.Nome = linha.Cells[1].Value.ToString();
-                    produto.Marca = linha.Cells[2].Value.ToString();
-                    produto.Preco = linha.Cells[3].Value.ToString();
-                    produto.Quantidade = linha.Cells[4].Value.ToString();
-                    listaProdutos.Add(produto);
-                }
-                produtoDAO.AtualizarID(listaProdutos);
-                dataTable = produtoDAO.ReceberProdutos();
-                dgvProdutos.DataSource = dataTable;
-                dgvProdutos.Refresh();
+                produto.Codigo = (int)linha.Cells[0].Value;
+                produto.Nome = linha.Cells[1].Value.ToString();
+                produto.Marca = linha.Cells[2].Value.ToString();
+                produto.Preco = linha.Cells[3].Value.ToString();
+                produto.Quantidade = linha.Cells[4].Value.ToString();
+                listaProdutos.Add(produto);
             }
-            else
+            if (listaProdutos.Count == 0)
             {
-                foreach (DataGridViewRow linha in dgvProdutos.Rows)
-                {
-                    produto.Codigo = (int)linha.Cells[0].Value;
-                    produto.Nome = linha.Cells[1].Value.ToString();
-                    produto.Marca = linha.Cells[2].Value.ToString();
-                    produto.Preco = linha.Cells[3].Value.ToString();
-                    produto.Quantidade = linha.Cells[4].Value.ToString();
-                    string nomeEMarca;
-                    nomeEMarca = produto.Nome + "/" + produto.Marca;
-                    cbxProdutos.Items.Add(nomeEMarca);
-                    listaProdutos.Add(produto);
-                }
-            }
-            if (cbxProdutos.Items.Count > 0)
-            {
-                btnComprasProduto.Enabled = true;
-            }
-            else
-            {
+                AlterarExcluirAlterar(false);
                 btnComprasProduto.Enabled = false;
+            }
+            else
+            {
+                AlterarExcluirAlterar(true);
+                btnComprasProduto.Enabled = true;
+                InserirProduto();
             }
         }
 
@@ -139,8 +115,9 @@ namespace Pequeno_Mercado
         {
             AlterarNomePrecoQuant(true);
             AlterarSalvarCancelar(true);
-            AlterarSelecinaProduto(false);
             btnAdicionar.Enabled = false;
+            AlterarExcluirAlterar(false);
+            LimparCampos();
             acao = EnumAcao.ADICIONAR;
 
         }
@@ -156,8 +133,6 @@ namespace Pequeno_Mercado
                 LimparCampos();
             }
             btnAdicionar.Enabled = true;
-            AlterarExcluirAlterar(false);
-            AlterarSelecinaProduto(true);
         }
 
         private void btnSalvar_Click(object sender, EventArgs e)
@@ -174,7 +149,7 @@ namespace Pequeno_Mercado
                 };
                 foreach (ProdutoEstoque item in listaProdutos)
                 {
-                    if (item.Nome == txbNome.Text && item.Marca == txbMarca.Text && item.Preco == txbPreco.Text)
+                    if (item.Nome == txbNome.Text.ToUpper() && item.Marca == txbMarca.Text.ToUpper() && item.Preco == txbPreco.Text.ToUpper())
                     {
                         ProdutoEstoque produtoExistente = produto;
                         int quantProdIgual = Convert.ToInt32(produtoExistente.Quantidade) + Convert.ToInt32(produto.Quantidade);
@@ -196,8 +171,8 @@ namespace Pequeno_Mercado
                 CarregarProdutosDGV();
                 AlterarSalvarCancelar(false);
                 AlterarNomePrecoQuant(false);
-                AlterarSelecinaProduto(true);
-                btnAdicionar.Enabled = true;
+                AlterarExcluirAlterar(true);
+                AlterarAdicionarExcluir(true);
                 LimparCampos();
             }
             else
@@ -211,39 +186,21 @@ namespace Pequeno_Mercado
             LimparCampos();
             AlterarSalvarCancelar(false);
             AlterarNomePrecoQuant(false);
-            AlterarSelecinaProduto(true);
-            btnAdicionar.Enabled = true;
+            AlterarAdicionarExcluir(true);
         }
 
         private void btnAlterar_Click(object sender, EventArgs e)
         {
             AlterarNomePrecoQuant(true);
-            AlterarExcluirAlterar(false);
             AlterarSalvarCancelar(true);
+            AlterarAdicionarExcluir(false);
             acao = EnumAcao.ALTERAR;
         }
 
         private void lbNome_Click(object sender, EventArgs e)
         {
         }
-
-        private void cbxProdutos_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cbxProdutos.SelectedIndex >= 0)
-            {
-                indice = cbxProdutos.SelectedIndex;
-                produtoSelecionado = listaProdutos[indice];
-                txbNome.Text = produtoSelecionado.Nome;
-                txbMarca.Text = produtoSelecionado.Marca;
-                txbPreco.Text = produtoSelecionado.Preco;
-                txbQuant.Text = produtoSelecionado.Quantidade;
-            }
-            CarregarProdutosDGV();
-            AlterarSelecinaProduto(false);
-            AlterarExcluirAlterar(true);
-            btnAdicionar.Enabled = false;
-
-        }
+        
 
         private void btnComprasProduto_Click(object sender, EventArgs e)
         {
@@ -264,6 +221,19 @@ namespace Pequeno_Mercado
         private void dgvProdutos_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void dgvProdutos_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            InserirProduto();
+        }
+
+        private void InserirProduto()
+        {
+            txbNome.Text = dgvProdutos.CurrentRow.Cells[1].Value.ToString();
+            txbMarca.Text = dgvProdutos.CurrentRow.Cells[2].Value.ToString();
+            txbPreco.Text = dgvProdutos.CurrentRow.Cells[3].Value.ToString();
+            txbQuant.Text = dgvProdutos.CurrentRow.Cells[4].Value.ToString();
         }
     }
 }

@@ -19,9 +19,15 @@ namespace Pequeno_Mercado.ConexaoBanco
             comando.CommandType = CommandType.Text;
             comando.CommandText = "TRUNCATE TABLE Estoque";
             comando.ExecuteNonQuery();
-            foreach (ProdutoEstoque item in lista)
+            foreach (ProdutoEstoque produto in lista)
             {
-                Atualizar(item);
+                comando.CommandText = "UPDATE Estoque SET Nome = @nome, Marca = @marca, Preco = @preco, Quantidade = @quantidade WHERE Codigo = @codigo";
+                comando.Parameters.Add(DAOUtils.ReceberParametro("@nome", produto.Nome));
+                comando.Parameters.Add(DAOUtils.ReceberParametro("@marca", produto.Marca));
+                comando.Parameters.Add(DAOUtils.ReceberParametro("@preco", produto.Preco));
+                comando.Parameters.Add(DAOUtils.ReceberParametro("@quantidade", produto.Quantidade));
+                comando.Parameters.Add(DAOUtils.ReceberParametro("@codigo", produto.Codigo));
+                comando.ExecuteNonQuery();
             }
         }
         public DataTable ReceberProdutos()
@@ -72,16 +78,6 @@ namespace Pequeno_Mercado.ConexaoBanco
             comando.Parameters.Add(DAOUtils.ReceberParametro("@quantidade", produto.Quantidade));
             comando.Parameters.Add(DAOUtils.ReceberParametro("@codigo", produto.Codigo));
             comando.ExecuteNonQuery();
-        }
-
-        public int ContarUsuarios()
-        {   // usou uma linha e uma coluna devemos usar o ExecuteScalar
-            DbConnection conexao = DAOUtils.ReceberConexao();
-            DbCommand comando = DAOUtils.ReceberComando(conexao);
-            comando.CommandType = CommandType.Text;
-            comando.CommandText = "SELECT COUNT(*) FROM Estoque";
-            return Convert.ToInt32(comando.ExecuteScalar().ToString());
-
         }
     }
 }

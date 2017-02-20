@@ -1,0 +1,36 @@
+Nome do Cliente: rerer, Valor da Compra: 275,0
+Produto: RRR - Marca: RRR - Preço: R$55 - Quant. Comprada: 55
+
+
+Nome do Cliente: eee, Valor da Compra: 220,0
+Produto: RRR - Marca: RRR - Preço: R$55 - Quant. Comprada: 55
+
+
+Nome do Cliente: rr, Valor da Compra: 220,0
+Produto: RRR - Marca: RRR - Preço: R$55 - Quant. Comprada: 55
+
+
+Nome do Cliente: ee, Valor da Compra: 1265,0
+Produto: RRR - Marca: RRR - Preço: R$55 - Quant. Comprada: 55
+
+
+Nome do Cliente: rrr, Valor da Compra: 165,0
+Produto: RRR - Marca: RRR - Preço: R$55 - Quant. Comprada: 55
+
+
+Nome do Cliente: e4, Valor da Compra: 220,0
+Produto: RRR - Marca: RRR - Preço: R$55 - Quant. Comprada: 55
+
+
+Nome do Cliente: 5r, Valor da Compra: 165,0
+Produto: RRR - Marca: RRR - Preço: R$55 - Quant. Comprada: 55
+
+
+Nome do Cliente: ee, Valor da Compra: 110,0
+Produto: RRR - Marca: RRR - Preço: R$55 - Quant. Comprada: 55
+
+
+Nome do Cliente: 555, Valor da Compra: 275,0
+Produto: RRR - Marca: RRR - Preço: R$55 - Quant. Comprada: 55
+
+

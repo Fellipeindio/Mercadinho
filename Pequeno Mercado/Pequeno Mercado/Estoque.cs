@@ -206,6 +206,7 @@ namespace Pequeno_Mercado
         {
             Compras comprasClienteFormulario = new Compras();
             comprasClienteFormulario.ShowDialog(this);
+            CarregarProdutosDGV();
         }
 
         private void btnSair_Click(object sender, EventArgs e)

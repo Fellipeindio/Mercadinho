@@ -91,6 +91,7 @@ namespace Pequeno_Mercado.ConexaoBanco
             DbDataReader leitor = comando.ExecuteReader();
             while (leitor.Read())
             {
+                produto.Codigo = (int)leitor["Codigo"];
                 produto.Nome = (string)leitor["Nome"];
                 produto.Marca = (string)leitor["Marca"];
                 produto.Preco = (string)leitor["Preco"];

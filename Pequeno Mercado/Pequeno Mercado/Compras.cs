@@ -25,13 +25,7 @@ namespace Pequeno_Mercado
         {
             CarregarProdutosComboBox();
             AlterarBtnCompraTxbQuantCompra(false);
-            // lista auxiliar do estoque 
-            quantProdutos = new int[listaProdutos.Count]; int i = 0;
-            foreach (ProdutoEstoque produto in listaProdutos)
-            {
-                quantProdutos[i] = Convert.ToInt32(produto.Quantidade);
-                i++;
-            }
+
         }
 
         // Alteração de Estados
@@ -77,13 +71,16 @@ namespace Pequeno_Mercado
             ProdutosDAO produtoDAO = new ProdutosDAO();
             cbxProdutosCompra.Items.Clear();
             listaProdutos = produtoDAO.RetornaLista();
+            // lista auxiliar do estoque 
+            quantProdutos = new int[listaProdutos.Count]; int i = 0;
             string nomeMarca;
             foreach (ProdutoEstoque elemento in listaProdutos)
             {
+                quantProdutos[i] = Convert.ToInt32(elemento.Quantidade);
+                i++;
                 nomeMarca = elemento.Nome + "/" + elemento.Marca;
                 cbxProdutosCompra.Items.Add(nomeMarca);
             }
-
         }
 
         private void LimparCamposCompra()
@@ -104,7 +101,7 @@ namespace Pequeno_Mercado
             {
                 indice = cbxProdutosCompra.SelectedIndex;
                 produtoSelecionado = listaProdutos[indice];
-                txbQuantidade.Text = produtoSelecionado.Quantidade;
+                txbQuantidade.Text = quantProdutos[indice].ToString();
             }
             AlterarBtnCompraTxbQuantCompra(true);
         }
@@ -190,34 +187,31 @@ namespace Pequeno_Mercado
                 Dictionary<string, ProdutoComprado> compraLista = new Dictionary<string, ProdutoComprado>();
                 foreach (ProdutoComprado produtoCompra in lbxLista.Items)
                 {
-                    compraLista.Add(produtoCompra.Nome,produtoCompra);
+                    compraLista.Add(produtoCompra.Nome, produtoCompra);
                 }
                 ManipuladorDeArquivosCompra.EscreverAquivoCompra(compraLista, cliente);
                 //Retirar quantidade comprada
-                foreach (KeyValuePair<string,ProdutoComprado> elemento in compraLista)
+                foreach (ProdutoComprado produtoCompra in lbxLista.Items)
                 {
-                    ProdutoComprado elementoCompra = elemento.Value;
-                    foreach (ProdutoEstoque elementoEstoque in listaProdutos)
+                    foreach (ProdutoEstoque produtoEstoque in listaProdutos)
                     {
-                        if (elementoCompra.Nome == elementoEstoque.Nome && elementoCompra.Marca == elementoEstoque.Marca)
+                        if (produtoCompra.Nome == produtoEstoque.Nome && produtoCompra.Marca == produtoEstoque.Marca)
                         {
-                            int sobraEstoque = Convert.ToInt32(elementoEstoque.Quantidade) - Convert.ToInt32(elementoCompra.QuantidadeComprada);
-                            elementoEstoque.Quantidade = Convert.ToString(sobraEstoque);
+                            int sobraEstoque = Convert.ToInt32(produtoEstoque.Quantidade) - Convert.ToInt32(produtoCompra.QuantidadeComprada);
+                            produtoEstoque.Quantidade = Convert.ToString(sobraEstoque);
+                            ProdutosDAO produtoDAO = new ProdutosDAO();
+                            produtoDAO.Atualizar(produtoEstoque);
                             break;
                         }
                     }
                 }
-                ManipuladorDeArquivosEstoque.EscreverAquivo(listaProdutos);
                 MessageBox.Show("Compra Efetuada!!! Encerrando janela!");
                 Close();
             }
-            
         }
-
         private void Compras_Load(object sender, EventArgs e)
         {
         }
-
         private void btnOkCliente_Click(object sender, EventArgs e)
         {
             if (txbCliente.Text != "" && txbCliente.Text != "Insira o Nome do Cliente")

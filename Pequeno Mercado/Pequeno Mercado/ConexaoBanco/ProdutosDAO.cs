@@ -12,24 +12,6 @@ namespace Pequeno_Mercado.ConexaoBanco
 {
     public class ProdutosDAO
     {
-        public void AtualizarID(List<ProdutoEstoque> lista)
-        {
-            DbConnection conexao = DAOUtils.ReceberConexao();
-            DbCommand comando = DAOUtils.ReceberComando(conexao);
-            comando.CommandType = CommandType.Text;
-            comando.CommandText = "TRUNCATE TABLE Estoque";
-            comando.ExecuteNonQuery();
-            foreach (ProdutoEstoque produto in lista)
-            {
-                comando.CommandText = "UPDATE Estoque SET Nome = @nome, Marca = @marca, Preco = @preco, Quantidade = @quantidade WHERE Codigo = @codigo";
-                comando.Parameters.Add(DAOUtils.ReceberParametro("@nome", produto.Nome));
-                comando.Parameters.Add(DAOUtils.ReceberParametro("@marca", produto.Marca));
-                comando.Parameters.Add(DAOUtils.ReceberParametro("@preco", produto.Preco));
-                comando.Parameters.Add(DAOUtils.ReceberParametro("@quantidade", produto.Quantidade));
-                comando.Parameters.Add(DAOUtils.ReceberParametro("@codigo", produto.Codigo));
-                comando.ExecuteNonQuery();
-            }
-        }
         public DataTable ReceberProdutos()
         {
             DbConnection conexao = DAOUtils.ReceberConexao();
@@ -83,7 +65,6 @@ namespace Pequeno_Mercado.ConexaoBanco
         public List<ProdutoEstoque> RetornaLista()
         {
             List<ProdutoEstoque> Produtos = new List<ProdutoEstoque>();
-            ProdutoEstoque produto = new ProdutoEstoque();
             DbConnection conexao = DAOUtils.ReceberConexao();
             DbCommand comando = DAOUtils.ReceberComando(conexao);
             comando.CommandType = CommandType.Text;
@@ -91,6 +72,7 @@ namespace Pequeno_Mercado.ConexaoBanco
             DbDataReader leitor = comando.ExecuteReader();
             while (leitor.Read())
             {
+                ProdutoEstoque produto = new ProdutoEstoque();
                 produto.Codigo = (int)leitor["Codigo"];
                 produto.Nome = (string)leitor["Nome"];
                 produto.Marca = (string)leitor["Marca"];

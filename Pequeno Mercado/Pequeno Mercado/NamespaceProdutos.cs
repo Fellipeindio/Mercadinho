@@ -14,7 +14,7 @@ namespace NamespaceProdutos
         public string Marca { get; set; }
     }
 
-    public class ProdutoComprado : Produto
+    public sealed class ProdutoComprado : Produto
     {
         public string QuantidadeComprada { get; set; }
 
@@ -33,7 +33,7 @@ namespace NamespaceProdutos
 
     }
 
-    public class ProdutoEstoque : Produto
+    public sealed class ProdutoEstoque : Produto
     {
         public string Quantidade { get; set; }
 
